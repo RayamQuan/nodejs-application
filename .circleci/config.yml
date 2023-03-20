@@ -116,10 +116,12 @@ jobs:
       - run:
           name: Build Docker image
           command: |
+             cd build-nodejs-app
              docker build -t node-kubernetes .
       - run:
           name: Push to Docker Hub
           command: |
+            cd build-nodejs-app
             echo "$DOCKER_PASSWORD"
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker tag $MY_APP:latest $DOCKER_USERNAME/$MY_APP
