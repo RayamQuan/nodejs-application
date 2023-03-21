@@ -217,8 +217,8 @@ workflows:
       # - build-nodejs-application:
       #      requires: ["terraform-apply"]
       - deploy-nodejs-application
-      #     requires: [build-nodejs-application]
+          requires: [build-nodejs-application]
       - deploy-sock-shop
-      #     requires: [build-nodejs-application]
+          requires: [build-nodejs-application]
       - deploy-prometheus
-      #     requires: [build-nodejs-application]
+          requires: [build-nodejs-application]
