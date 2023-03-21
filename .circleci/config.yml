@@ -196,11 +196,11 @@ jobs:
             sed -i "s|IMAGE|$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_USERNAME/$APP:latest|g" kubernetes_sock-shop/manifests-monitoring/*yaml
             kubectl apply -f kubernetes_sock-shop/manifests-monitoring/      
             
-# workflows:
-#   version: 2
-#   project:
-#     jobs:
-#       - prometheus
+workflows:
+  version: 2
+  project:
+    jobs:
+      - prometheus
     #    - init
     #    - plan:
     #        requires: [init]
