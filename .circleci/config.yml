@@ -145,7 +145,7 @@ jobs:
           name: Deploy Docker image to EKS cluster
           command: |
             sed -i "s|IMAGE|$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_USERNAME/$APP:latest|g" clusters_for_kubernetes/*yaml
-            kubectl apply -f clusters_for_kubernetes/
+            kubectl apply -f kubernetes_nodejs_app/
             kubectl get pods
             kubectl get services
             
@@ -170,7 +170,7 @@ jobs:
           command: |
             sed -i "s|IMAGE|$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_USERNAME/$APP:latest|g" kubernetes/*yaml
             kubectl create namespace sock-shop
-            kubectl apply -f kubernetes/
+            kubectl apply -f kubernetes_sock-shop/
             
             
   deploy-prometheus:
@@ -193,7 +193,7 @@ jobs:
           name: Deploy Docker image to EKS cluster
           command: |
             sed -i "s|IMAGE|$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_USERNAME/$APP:latest|g" kubernetes/manifests-monitoring/*yaml
-            kubectl apply -f kubernetes/manifests-monitoring/
+            kubectl apply -f kubernetes_sock-shop/manifests-monitoring/
             
 workflows:
   version: 2
@@ -218,7 +218,7 @@ workflows:
       #      requires: ["terraform-apply"]
       - deploy-nodejs-application
       #     requires: [build-nodejs-application]
-      # - deploy-sock-shop
+      - deploy-sock-shop
       #     requires: [build-nodejs-application]
-      # - deploy-prometheus
+      - deploy-prometheus
       #     requires: [build-nodejs-application]
