@@ -230,7 +230,7 @@ workflows:
           # requires: ["hold-destroy"]  
       # - build-nodejs-application:
       #      requires: ["terraform-apply"]
-      - deploy-nodejs-application
+      # - deploy-nodejs-application
       #     requires: [build-nodejs-application]
       - deploy-sock-shop
       #     requires: [build-nodejs-application]
