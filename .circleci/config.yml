@@ -144,7 +144,7 @@ jobs:
       - run:
           name: Deploy Docker image to EKS cluster
           command: |
-            sed -i "s|IMAGE|$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_USERNAME/$APP:latest|g" kubernetes_nodejs_app/*yaml
+            sed -i "s|IMAGE|$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_USERNAME/$MY_APP:latest|g" kubernetes_nodejs_app/*yaml
             kubectl apply -f kubernetes_nodejs_app/
             kubectl get pods
             kubectl get services
@@ -158,7 +158,7 @@ jobs:
       - run:
           name: Deploy Docker image to EKS cluster
           command: |
-            sed -i "s|IMAGE|$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_USERNAME/$APP:latest|g" kubernetes_nodejs_app/*yaml
+            sed -i "s|IMAGE|$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_USERNAME/$MY_APP:latest|g" kubernetes_nodejs_app/*yaml
             kubectl apply -f kubernetes_nodejs_app/
             kubectl get pods
             kubectl get services   
@@ -182,7 +182,7 @@ jobs:
       - run:
           name: Deploy Docker image to EKS cluster
           command: |
-            sed -i "s|IMAGE|$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_USERNAME/$APP:latest|g" kubernetes_sock-shop/*yaml
+            sed -i "s|IMAGE|$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_USERNAME/$MY_APP:latest|g" kubernetes_sock-shop/*yaml
             kubectl create namespace sock-shop
             kubectl apply -f kubernetes_sock-shop/
             
@@ -206,7 +206,7 @@ jobs:
       - run:
           name: Deploy Docker image to EKS cluster
           command: |
-            sed -i "s|IMAGE|$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_USERNAME/$APP:latest|g" kubernetes_sock-shop/manifests-monitoring/*yaml
+            sed -i "s|IMAGE|$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_USERNAME/$MY_APP:latest|g" kubernetes_sock-shop/manifests-monitoring/*yaml
             kubectl apply -f kubernetes_sock-shop/manifests-monitoring/
             
 workflows:
