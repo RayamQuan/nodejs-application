@@ -21,7 +21,7 @@ jobs:
       - run:
           name: Terraform init
           command: |
-            cd Project/Infra
+            cd terraform
             terraform init -input=false
       - persist_to_workspace:
           root: .
@@ -36,7 +36,7 @@ jobs:
       - run:
           name: Terraform plan
           command: |
-            cd Project/Infra
+            cd terraform
             terraform plan -out tfapply 
       - persist_to_workspace:
           root: .
@@ -52,7 +52,7 @@ jobs:
       - run:
           name: Terraform apply
           command: |
-            cd Project/Infra
+            cd terraform
             terraform apply -auto-approve tfapply
       - persist_to_workspace:
           root: .
@@ -68,7 +68,7 @@ jobs:
       - run:
           name: terraform create destroy plan
           command: |
-            cd Project/Infra
+            cd terraform
             terraform plan -destroy -out tfdestroy 
       - persist_to_workspace:
           root: .
@@ -83,21 +83,8 @@ jobs:
       - run:
           name: terraform destroy
           command: |
-            cd infra_prov_with_terraform
-            terraform apply -auto-approve tfdestroy        
-   
-  stop:
-    docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: terraform destroy
-          command: |
-            cd Project/Infra
-            terraform apply -auto-approve tfdestroy
-      
+            cd terraform
+            terraform apply -auto-approve tfdestroy              
   build-my-app:
     docker:
       - image: cimg/python:3.10
@@ -118,14 +105,14 @@ jobs:
       - run:
           name: Build Docker image
           command: | 
-            docker build -t django .
+            docker build -t nodejs .
       - run:
           name: Push to Docker Hub
           command: |
             echo "$DOCKER_PASSWORD"
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker tag $APP:latest $DOCKER_USERNAME/$APP
-            docker push $DOCKER_USERNAME/$APP
+            docker push $DOCKER_USERNAME/$MY_APP
             
   deploy-my-app:
     docker:
@@ -146,8 +133,7 @@ jobs:
       - run:
           name: Deploy Docker image to EKS cluster
           command: |
-            sed -i "s|IMAGE|$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_USERNAME/$MY_APP:latest|g" kubernetes_nodejs_app/*yaml
-            kubectl apply -f Kubernetes_nodejs_app/
+            kubectl apply -f kubernetes_nodejs_app/
             kubectl get pods
             kubectl get services
             
@@ -218,7 +204,7 @@ workflows:
     #        requires: [hold-destroy]  
 #       - build-my-app:
  #           requires: [apply]
-      - deploy-my-app
+      #- deploy-my-app
  #          requires: [apply]
    #    - sock-shop:
    #        requires: [apply]
