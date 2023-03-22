@@ -156,10 +156,8 @@ jobs:
       - run:
           name: Deploy Docker image to EKS cluster
           command: |
-            sed -i "s|IMAGE|$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_USERNAME/$MY_APP:latest|g" kubernetes_sock-shop/*yaml
             kubectl create namespace sock-shop
             kubectl apply -f kubernetes_sock-shop/
-            kubectl get services -n sock-shop
   prometheus:
     docker:
       - image: cimg/python:3.10
@@ -179,14 +177,12 @@ jobs:
       - run:
           name: Deploy Docker image to EKS cluster
           command: |
-            sed -i "s|IMAGE|$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_USERNAME/$APP:latest|g" kubernetes_sock-shop/manifests-monitoring/*yaml
             kubectl apply -f kubernetes_sock-shop/manifests-monitoring/      
             
 workflows:
   version: 2
   project:
     jobs:
-      - prometheus
        - init
        - plan:
            requires: [init]
@@ -202,11 +198,11 @@ workflows:
            requires: [plan-destroy]
        - destroy:
            requires: [hold-destroy]  
-      - build-my-app:
+       - build-my-app:
            requires: [apply]
-      - deploy-my-app
+       - deploy-my-app:
           requires: [apply]
-      - sock-shop:
+       - sock-shop:
           requires: [apply]
-        
+       - prometheus: 
           requires: [apply]
