@@ -111,7 +111,7 @@ jobs:
           command: |
             echo "$DOCKER_PASSWORD"
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker tag $APP:latest $DOCKER_USERNAME/$APP
+            docker tag $APP:latest $DOCKER_USERNAME/$MY_APP
             docker push $DOCKER_USERNAME/$MY_APP
             
   deploy-my-app:
@@ -135,7 +135,6 @@ jobs:
           command: |
             kubectl apply -f kubernetes_nodejs_app/
             kubectl get pods
-            kubectl get services
             
   sock-shop:
     docker:
@@ -183,26 +182,26 @@ workflows:
   version: 2
   project:
     jobs:
-       - init
-       - plan:
-           requires: [init]
-       - hold-apply:
-           type: approval
-           requires: [plan]
-       - apply:
-           requires: [hold-apply]
-       - plan-destroy:
-           requires: [apply]
-       - hold-destroy:
-           type: approval
-           requires: [plan-destroy]
-       - destroy:
-           requires: [hold-destroy]  
-       - build-my-app:
-           requires: [apply]
-       - deploy-my-app:
-          requires: [apply]
-       - sock-shop:
-          requires: [apply]
-       - prometheus: 
-          requires: [apply]
+#        - init
+#        - plan:
+#            requires: [init]
+#        - hold-apply:
+#            type: approval
+#            requires: [plan]
+#        - apply:
+#            requires: [hold-apply]
+#        - plan-destroy:
+#            requires: [apply]
+#        - hold-destroy:
+#            type: approval
+#            requires: [plan-destroy]
+#        - destroy:
+#            requires: [hold-destroy]  
+#        - build-my-app:
+#            requires: [apply]
+       - deploy-my-app
+#           requires: [apply]
+#        - sock-shop:
+#           requires: [apply]
+#        - prometheus: 
+#           requires: [apply]
