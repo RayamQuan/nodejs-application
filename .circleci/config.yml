@@ -182,7 +182,7 @@ workflows:
   version: 2
   project:
     jobs:
-#        - init
+       - init
        - plan:
            requires: [init]
        - hold-apply:
